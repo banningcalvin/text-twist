@@ -17,10 +17,10 @@
   <script>
     $(document).ready(function(){
       
-      let showRacks = function(racks){
+      let showRacks = function(words){
         $("#bingos").html('');
-        racks.map(rack=>{
-          $("#bingos").append(`<li>${rack.rack}: <span class="answer hidden">${rack.words}</span></li>`);
+        words.map(word=>{
+          $("#bingos").append(`<li>${word.word}: <span class="answer hidden">${word.words}</span></li>`);
         });
         $("#bingos li").on("click", function(evt){
           $(evt.currentTarget).find(".answer").toggleClass("hidden");
