@@ -4,11 +4,8 @@
     $dbhandle = new PDO("sqlite:words.sqlite") or die("Failed to open DB");
     if (!$dbhandle) die ($error);
  
-    //this is a sample query which gets some data, the order by part shuffles the results
-    //the limit 0, 10 takes the first 10 results.
-    // you might want to consider taking more results, implementing "pagination", 
-    // ordering by rank, etc.
-    $query = "SELECT * FROM words order by random() limit 0, 10";
+    //returns random word without a hyphen or dash between 5 and 7 letters
+    $query = "SELECT * FROM WORDS WHERE WORD NOT LIKE '% %' AND WORD NOT LIKE '%-%' AND LENGTH(WORD) > 4 AND LENGTH(WORD) < 8 ORDER BY RANDOM() LIMIT 1";
     
     //this next line could actually be used to provide user_given input to the query to 
     //avoid SQL injection attacks

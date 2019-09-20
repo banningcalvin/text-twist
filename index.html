@@ -1,39 +1,70 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      .hidden {
-        display: none;
+
+<head>
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Cinzel&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="index.css" />
+</head>
+
+<body>
+  <h1 class='title'>TEXT-TWIST II:<br /> THE TWISTENING</h1>
+  <div class='controls'>
+    <button id="twist" class="button">TWIST</button>
+    <button id="enter" class="button">ENTER</button>
+    <button id="quit" class="button">END IT</button>
+  </div>
+  <div id="rack">
+  </div>
+</body>
+<script>
+  $(function () {
+
+    var secretWord = ""
+
+    // replace with the backend php functions andy has to provide all subracks
+    // and automatically choose one of those
+    var shuffle = function (s) {
+      let a = s.split(""),
+        n = a.length;
+
+      for (let i = n - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
       }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
-  </head>
-  <body>
-    <h1>Spot The Bingo</h1>
-    <button id="grabmore">Fetch 10 Bingos</button>
-    <ul id="bingos">
-    </ul>
-  </body>
-  <script>
-    $(document).ready(function(){
+      return a.join("");
+    }
+
+    var showRack = function (words) {
+      $("#rack").html('');
+      words.map(word => {
+        secretWord = word.word;
+        let shuffled = shuffle(secretWord);
+        
+        $("#rack").append(`<li>${secretWord}</li>`);
+        $("#rack").append(`<li>${shuffled}</li>`);
+      });
+    }
+
+    $("#twist").on("click", function () {
       
-      let showRacks = function(words){
-        $("#bingos").html('');
-        words.map(word=>{
-          $("#bingos").append(`<li>${word.word}: <span class="answer hidden">${word.words}</span></li>`);
-        });
-        $("#bingos li").on("click", function(evt){
-          $(evt.currentTarget).find(".answer").toggleClass("hidden");
-        });
-      }
-      
-      $("#grabmore").on("click", function(){
-        $.ajax({
-            method: "GET",
-            url: "api.php",
-            success: data=>{ showRacks(data)}
-        });
+    });
+
+    $("#enter").on("click", function () {
+      $.ajax({
+        method: "GET",
+        url: "api.php",
+        success: data => { showRack(data) }
       });
     });
-  </script>
+  });
+</script>
+
 </html>

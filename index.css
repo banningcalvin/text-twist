@@ -1,0 +1,16 @@
+.title {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    border-bottom-style: groove;
+    max-width: 10em;
+    margin: auto;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    margin: 1em;
+}
