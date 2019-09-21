@@ -22,7 +22,7 @@
   <div id="rack">
   </div>
 </body>
-<script>
+<script>note
   $(function () {
 
     var secretWord = ""
@@ -42,7 +42,7 @@
       return a.join("");
     }
 
-    var showRack = function (words) {
+    var showRack = function (words) { // maybe have this take in a word, that way it's not displaying the correct words, and then it shuffles it
       $("#rack").html('');
       words.map(word => {
         secretWord = word.word;
@@ -57,7 +57,7 @@
       
     });
 
-    $("#enter").on("click", function () {
+    $("#enter").on("click", function () { // we can have this first as a start function and then as an "enter key" of sorts
       $.ajax({
         method: "GET",
         url: "api.php",
