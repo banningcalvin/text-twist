@@ -54,7 +54,9 @@
     }
 
     $("#twist").on("click", function () {
-      
+    // for something like this to work, need to be able to save the current "correct answer" and its shuffled counterpart to a global list or variable that we can access at every time
+    // This is primarily due to the fact that the "showRack" function is operated on in the local scope. 
+    shuffled = shuffle(secretWord); // Not sure if this will actually work since it's not clear if the words are saved in the global scope
     });
 
     $("#enter").on("click", function () { // we can have this first as a start function and then as an "enter key" of sorts if that's what we want
