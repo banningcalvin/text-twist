@@ -79,7 +79,7 @@
             alert("Guesses can NOT be empty");
           }
           else{
-            result.textContent = "Your guess is: " + theWord;
+            $("#result").append('<li>${theWord}</li');
           }
         }
       });
@@ -97,6 +97,7 @@
         url: "api.php",
         success: data => { showRack(data) }
       });
+      getGuess();
     });
   });
 </script>
