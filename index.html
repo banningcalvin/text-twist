@@ -14,57 +14,145 @@
 
 <body>
   <h1 class='title'>TEXT-TWIST II:<br /> THE TWISTENING</h1>
+
   <div class='controls'>
-    <button id="twist" class="button">TWIST</button>
-    <button id="enter" class="button">ENTER</button>
-    <button id="quit" class="button">END IT</button>
+    <button id="start" class="button">START</button>
+    <button id="twist" class="button hidden">TWIST</button>
+    <button id="enter" class="button hidden">ENTER</button>
   </div>
+
   <div id="rack">
+
   </div>
+
+  <div id="result">
+
+  </div>
+
+  <div id="response">
+
+  </div>
+
+  <div id="remaining">
+    Press Start to Begin
+  </div>
+
+  <div id="scoreTitle" class="hidden"><h2>Score:</h2></div>
+  <div id="score" class="hidden">0</div>
+
+  <div id="past" class="hidden">
+    <h2>Correct Guesses:</h2>
+  </div>
+
 </body>
 <script>
-  $(function () {
+  var game = function () {
+    var self = this;
 
-    var secretWord = ""
+    var score = 0;
 
-    // replace with the backend php functions andy has to provide all subracks
-    // and automatically choose one of those
-    var shuffle = function (s) {
-      let a = s.split(""),
-        n = a.length;
+    var rack = [];
+    var letterButtons = [];
+    
+    var validWords = [];
+    var remaining = 0;
+    
+    var guess = "";
 
-      for (let i = n - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        let tmp = a[i];
-        a[i] = a[j];
-        a[j] = tmp;
-      }
-      return a.join("");
-    }
 
-    var showRack = function (words) {
-      $("#rack").html('');
-      words.map(word => {
-        secretWord = word.word;
-        let shuffled = shuffle(secretWord);
-        
-        $("#rack").append(`<li>${secretWord}</li>`);
-        $("#rack").append(`<li>${shuffled}</li>`);
-      });
-    }
 
-    $("#twist").on("click", function () {
+    this.clear = function () {
+      this.guess = '';
+      for (var i = 0; i < this.letterButtons.length; i++)
+        this.letterButtons[i].disabled = false;
+
+      this.displayLetters();
+    };
+
+    this.displayLetters = function () { $('#result').text(this.guess); };
+
+    this.getWords = function (response) {
+      self.validWords = response.words;
+      self.remaining = self.validWords.length;
+      self.rack = response.letters;
+
+      $("#start").hide();
+      $("#remaining").text(self.remaining);
       
-    });
+      
+      let letters = self.rack.split("");
+      let prompt = 'CHOOSE LETTERS:<br \>';
+      
+      for (var i = 0; i < letters.length; i++) {
+        prompt += '<button class="letter" letter="' + letters[i] + '">' + letters[i] + '</button>';
+      }
 
-    $("#enter").on("click", function () {
-      $.ajax({
-        method: "GET",
-        url: "api.php",
-        success: data => { showRack(data) }
+      $("#rack").html(prompt);
+      self.letterButtons = document.querySelectorAll('.letter');
+
+      $("#past").removeClass("hidden");
+      $("#score").removeClass("hidden");
+      $("#scoreTitle").removeClass("hidden");
+
+      $("#enter").removeClass("hidden");
+      this.guess = "";
+      for (let i = 0; i < this.letterButtons.length; i++) {
+        this.letterButtons[i].addEventListener('click', function () {
+          self.guess += this.getAttribute('letter');
+          this.disabled = true;
+          self.displayLetters();
+        });
+      }
+      $("#enter").on('click', function () {
+        self.checkGuess();
       });
+    };
+
+    this.checkGuess = function () {
+      var length = this.validWords.length;
+      var correct = false;
+      
+      for (var i = 0; i < length; i++) {
+        if (this.validWords[i] != null && this.guess == this.validWords[i]) {
+          this.validWords[i] = null;
+          $("#past").append("" + this.guess + "<br>")
+          score++;
+          $("#score").html(score)
+          correct = true;
+          break;
+        }
+      }
+
+      this.handleAnswer(correct);
+    }
+
+    this.handleAnswer = function (correct) {
+      if (correct) {
+        this.remaining--;
+        if (this.remaining == 0) {
+          $('#response').html('<h1>YOU SURVIVED.</h1>');
+          return;
+        }
+        $("#response").text("YOU GUESSED CORRECTLY.");
+        $("#remaining").text(this.remaining);
+      }
+      else {
+        $("#response").text("YOU GUESSED INCORRECTLY.");
+      }
+      this.clear();
+    }
+
+    $("#start").on('click', function () {
+      var request = new XMLHttpRequest();
+      request.onload = function () {
+        self.getWords(JSON.parse(this.response));
+      };
+      request.open("GET", "api.php");
+      request.send();
     });
-  });
+  }
+
+  let newGame = new game();
 </script>
 
 </html>
