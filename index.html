@@ -77,7 +77,7 @@
       self.rack = response.letters;
 
       $("#start").hide();
-      $("#remaining").text(self.remaining);
+      $("#remaining").text("Words Remaining: " + self.remaining);
       
       
       let letters = self.rack.split("");
@@ -130,11 +130,11 @@
       if (correct) {
         this.remaining--;
         if (this.remaining == 0) {
-          $('#response').html('<h1>YOU SURVIVED.</h1>');
+          $('#response').html('<h1>YOU SURVIVED. Refresh to play again.</h1>');
           return;
         }
         $("#response").text("YOU GUESSED CORRECTLY.");
-        $("#remaining").text(this.remaining);
+        $("#remaining").text("Words Remaining: " + this.remaining);
       }
       else {
         $("#response").text("YOU GUESSED INCORRECTLY.");
