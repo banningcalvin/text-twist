@@ -18,6 +18,23 @@
     <button id="twist" class="button">TWIST</button>
     <button id="enter" class="button">ENTER</button>
     <button id="quit" class="button">END IT</button>
+    <input type="text" id="wordHere">
+  </div>
+  <form id="wordLable" for="wordHere">
+    <div id="input">
+      <label id="wordLable" for="wordHere">
+        Input a guess:
+      </label>
+      <input id="wordHere" type="text" maxlength="25">
+    </div>
+    <div class="submitter">
+      <button id="subButton" type="button">
+        Check your guess!
+      </button>
+    </div>
+  </form>
+  <div>
+    <p id="result"></p>
   </div>
   <div id="rack">
   </div>
@@ -48,8 +65,24 @@
         secretWord = word.word;
         let shuffled = shuffle(secretWord);
         
-        $("#rack").append(`<li>${secretWord}</li>`);
+        //$("#rack").append(`<li>${secretWord}</li>`);
         $("#rack").append(`<li>${shuffled}</li>`);
+      });
+    }
+
+    var getGuess = function(){
+      var guesser = document.getElementById("wordHere");
+      var result = document.getElementById("result");
+      var enterWaiter = guesser.addEventListener("keypress", function(k){
+        if(k.keyCode == 13){
+          var theWord = document.getElementById("wordHere").nodeValue;
+          if(theWord.length == 0){
+            alert("Guesses can NOT be empty");
+          }
+          else{
+            result.textContent = "Your guess is: " + theWord;
+          }
+        }
       });
     }
 
