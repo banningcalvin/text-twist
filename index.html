@@ -125,6 +125,17 @@
       this.handleAnswer(correct);
     }
 
+    this.getWordCountsLeft = function(counter, correct){
+      var total = 0;
+      for(var k = 0; k < this.validWords.length; k++){
+        if(this.validWords[k] != null && this.validWords[k].length == k){
+          total++;
+        }
+      }
+      return total;
+    }
+
+
     this.handleAnswer = function (correct) {
       if (correct) {
         this.remaining--;
@@ -133,7 +144,13 @@
           return;
         }
         $("#response").text("YOU GUESSED CORRECTLY.");
-        $("#remaining").text("Words Remaining: " + this.remaining);
+        $("#remaining").text("");
+        var theCount = 0;
+        for(var m = 1; m <= 7; m++){
+          theCount = this.getWordCountsLeft(m, true);
+          $("#remaining").append(m + " letter words left: " + theCount + " ");
+        }
+        //$("#remaining").text("Words Remaining: " + this.remaining);
       }
       else {
         $("#response").text("YOU GUESSED INCORRECTLY.");
