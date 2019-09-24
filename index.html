@@ -20,26 +20,6 @@
     <button id="twist" class="button hidden">TWIST</button>
     <button id="enter" class="button hidden">ENTER</button>
   </div>
-<<<<<<< HEAD
-  <form id="wordLable" for="wordHere">
-    <div id="input">
-      <label id="wordLable" for="wordHere">
-        Input a guess:
-      </label>
-      <input id="wordHere" type="text" maxlength="25">
-    </div>
-    <div class="submitter">
-      <button id="subButton" type="button">
-        Check your guess!
-      </button>
-    </div>
-  </form>
-  <div>
-    <p id="result"></p>
-  </div>
-=======
-
->>>>>>> master
   <div id="rack">
 
   </div>
@@ -64,10 +44,6 @@
   </div>
 
 </body>
-<<<<<<< HEAD
-<script>note
-  $(function () {
-=======
 <script>
   var game = function () {
     var self = this;
@@ -88,7 +64,6 @@
       this.guess = '';
       for (var i = 0; i < this.letterButtons.length; i++)
         this.letterButtons[i].disabled = false;
->>>>>>> master
 
       this.displayLetters();
     };
@@ -111,16 +86,6 @@
         prompt += '<button class="letter" letter="' + letters[i] + '">' + letters[i] + '</button>';
       }
 
-<<<<<<< HEAD
-    var showRack = function (words) { // maybe have this take in a word, that way it's not displaying the correct words, and then it shuffles it
-      $("#rack").html('');
-      words.map(word => {
-        secretWord = word.word;
-        let shuffled = shuffle(secretWord);
-        
-        $("#rack").append(`<li>${secretWord}</li>`);
-        $("#rack").append(`<li>${shuffled}</li>`);
-=======
       $("#rack").html(prompt);
       self.letterButtons = document.querySelectorAll('.letter');
 
@@ -139,41 +104,9 @@
       }
       $("#enter").on('click', function () {
         self.checkGuess();
->>>>>>> master
       });
     };
 
-<<<<<<< HEAD
-    var getGuess = function(){
-      var guesser = document.getElementById("wordHere");
-      var result = document.getElementById("result");
-      var enterWaiter = guesser.addEventListener("keypress", function(k){
-        if(k.keyCode == 13){
-          var theWord = document.getElementById("wordHere").nodeValue;
-          if(theWord.length == 0){
-            alert("Guesses can NOT be empty");
-          }
-          else{
-            $("#result").append('<li>${theWord}</li');
-          }
-        }
-      });
-    }
-
-    $("#twist").on("click", function () {
-    // for something like this to work, need to be able to save the current "correct answer" and its shuffled counterpart to a global list or variable that we can access at every time
-    // This is primarily due to the fact that the "showRack" function is operated on in the local scope. 
-    shuffled = shuffle(secretWord); // Not sure if this will actually work since it's not clear if the words are saved in the global scope
-    });
-
-    $("#enter").on("click", function () { // we can have this first as a start function and then as an "enter key" of sorts if that's what we want
-      $.ajax({
-        method: "GET",
-        url: "api.php",
-        success: data => { showRack(data) }
-      });
-      getGuess();
-=======
     this.checkGuess = function () {
       var length = this.validWords.length;
       var correct = false;
@@ -215,7 +148,6 @@
       };
       request.open("GET", "api.php");
       request.send();
->>>>>>> master
     });
   }
 
